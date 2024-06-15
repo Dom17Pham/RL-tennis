@@ -19,12 +19,13 @@ hyperparameters = {
     "exploration_factor_min":0.1,   # Minimum Exploration Factor
     "exploration_decay":0.995,      # Exploration Decay
     "discount_factor": 0.99,        # Discount Factor
-    "training_episodes": 10,      # Number of training episodes
-    "testing_episodes": 1,          # Number of testing episodes
+    "training_episodes": 10,        # Number of training episodes
     "max_steps": 100,               # Maximum steps per episode
-    "replay_buffer_size": 10000,
-    "batch_size": 32,
-    "save_interval": 500
+    "replay_buffer_size": 10000,    # Capacity of the replay buffer
+    "batch_size": 32,               # Size of batch to start sampling from 
+    "save_interval": 100,           # Interval to save mmodel during training
+    "priority_exponent": 0.6,
+    "importance_sampling": 0.4,
 }
 
 # Initialize the environment
@@ -68,7 +69,7 @@ for episode in range(hyperparameters["training_episodes"]):
 
     # Save the model weights every save_interval episodes
     if (episode + 1) % hyperparameters["save_interval"] == 0:
-        model_filename = f"agent_model_episode_{episode + 1}.keras"
+        model_filename = f"../models/agent_model_episode_{episode + 1}.keras"
         model.save(model_filename)
     
     # Track the best performing model
