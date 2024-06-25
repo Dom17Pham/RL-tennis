@@ -14,16 +14,17 @@ ale.loadROM(Tennis)
 # Hyperparameters
 hyperparameters = {
     "learning_rate": 0.1,           # Learning Rate
-    "exploration_factor": 1.0,      # Exploration Factor 
+    "exploration_factor": 1.0,      # Exploration Factor (initial)
     "exploration_factor_min":0.1,   # Minimum Exploration Factor
     "exploration_decay":0.995,      # Exploration Decay
     "discount_factor": 0.99,        # Discount Factor
-    "training_episodes": 1,         # Number of training episodes
-    "testing_episodes": 1,          # Number of testing episdoes
+    "testing_episodes": 5,          # Number of training episodes
     "max_steps": 100,               # Maximum steps per episode
-    "replay_buffer_size": 10000,
-    "batch_size": 32,
-    "save_interval": 100
+    "replay_buffer_size": 10000,    # Capacity of the replay buffer
+    "batch_size": 32,               # Size of batch to start sampling from 
+    "save_interval": 100,           # Interval to save mmodel during training
+    "priority_exponent": 0.6,
+    "importance_sampling": 0.4,
 }
 
 # Initialize the environment
