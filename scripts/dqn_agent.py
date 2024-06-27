@@ -17,17 +17,20 @@ class PrioritizedReplayBuffer:
 
     def sample(self, batch_size, beta=0.4):
         scaled_priorities = np.array(self.priorities) ** beta
-
+        
         # Avoid NaN values
         if np.any(np.isnan(scaled_priorities)):
             scaled_priorities = np.nan_to_num(scaled_priorities, nan=0.0, posinf=0.0, neginf=0.0)
         
-        sample_probs = scaled_priorities / sum(scaled_priorities)
+        total_priority = sum(scaled_priorities)
         
-        # Avoid NaN values in sample_probs
-        if np.any(np.isnan(sample_probs)):
-            sample_probs = np.nan_to_num(sample_probs, nan=1.0/len(sample_probs))
-
+        # Check if total_priority is zero or very close to zero
+        if total_priority == 0 or np.isclose(total_priority, 0.0):
+            # Handle the edge case where all priorities might be zero
+            sample_probs = np.ones_like(scaled_priorities) / len(scaled_priorities)
+        else:
+            sample_probs = scaled_priorities / total_priority
+        
         indices = np.random.choice(len(self.buffer), batch_size, p=sample_probs)
         samples = [self.buffer[idx] for idx in indices]
 
